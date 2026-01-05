@@ -1,0 +1,93 @@
+{% extends 'movie/base.html' %}
+
+{% load static %}
+{% block title %}
+{{obj.username}}'s profile
+{% endblock %}
+
+{% block head%}
+<style>
+
+    .stack{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 100px;
+    }
+    .stack div img{
+        width: 100%;
+        height: 100%;
+        object-fit:cover;
+        border-radius: 100px;
+    }
+
+    .uxdxbutton{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+        gap:5px;
+    }
+
+    .uxdxbutton .username{
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .image_{
+        width: 200px;
+        height: 200px;
+        
+    }
+    .count{
+        display: flex;
+        flex-direction: column;
+        gap:5px;
+        
+        
+    }
+
+    .count div{
+        display: flex;
+        justify-content: space-around;
+        gap:50px;
+    }
+
+
+</style>
+{% endblock head %}
+
+
+
+{% block content %}
+
+<div class="stack">
+    <div class="image_"><img src="{{ obj.profile.image.url }}"></div>
+    <div class="uxdxbutton">
+        <div class="username">{{obj.username}}</div>
+        <div><b><i>{{obj.profile.bio}}</i></b></div>
+        <div>Joined on {{ obj.date_joined|date:"F Y" }}</div>
+        <div class="count">
+            <div>
+                <div><b>Following</b></div>
+                <div><b>Followers</b></div>
+            </div> 
+            <div>
+                <div>{{ obj.following.count }}</div>
+                <div>{{ obj.followers.count }}</div>
+            </div>
+            {% if request.user != obj %}
+            {% if obj.is_following %}
+                    <a href="{% url 'unfollow_user' obj.id %}" class="btn btn-outline-secondary btn-sm" style="font-size: 14px;">Unfollow</a>
+                {% else %}
+                    <a href="{% url 'follow_user' obj.id %}" class="btn btn-outline-secondary btn-sm" style="font-size: 14px;">Follow</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    
+</div>
+
+
+{% endblock %}

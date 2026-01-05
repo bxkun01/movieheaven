@@ -1,0 +1,57 @@
+{% extends 'movie/base.html' %}
+
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'users/members.css' %}">
+{% endblock head %}
+
+{% block title %}
+Members
+{% endblock %}
+
+{% block content %}
+<!-- Container for the list (below the navbar) -->
+<div class="container-fluid" style="margin-top: 80px;"> <!-- Add margin to avoid overlap with navbar -->
+    <div class="row justify-content-center"> <!-- Center the row -->
+        <div class="col-12 col-md-8 col-lg-6" style="max-height: 80vh; overflow-y: auto;"> <!-- Set max-height for scrollable container -->
+            <ul class="list-unstyled">
+                {% for member in members %}
+                <li class="mb-3"> <!-- List item for each member -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center">
+                                <!-- Profile Image -->
+                                <img src="{{ member.profile.image.url|default:'/static/images/default_profile.jpg' }}" 
+                                     class="rounded-circle img-thumbnail border-2 border-white" 
+                                     style="width: 80px; height: 80px;" 
+                                     alt="Profile Image">
+                                
+                                <!-- User Info -->
+                                <div class="ms-3 flex-grow-1">
+                                    <h6 class="card-title fw-bold mb-1" style="font-size: 16px;">
+                                        <a href="{% url 'user-profile' member.id %}" class="text-decoration-none text-dark">{{ member.username }}</a>
+                                    </h6>
+                                    <p class="text-muted small mb-0" style="font-size: 14px;">{{ member.followers.count }} followers</p>
+                                    <p class="text-muted small mb-0" style="font-size: 14px;">0 reviews</p>
+                                </div>
+
+                                <!-- Follow Button -->
+                                <div>
+                                    {% if request.user != member %}
+                                    {% if member.is_following %}
+                                            <a href="{% url 'unfollow_user' member.id %}" class="btn btn-outline-secondary btn-sm" style="font-size: 14px;">Unfollow</a>
+                                        {% else %}
+                                            <a href="{% url 'follow_user' member.id %}" class="btn btn-outline-secondary btn-sm" style="font-size: 14px;">Follow</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

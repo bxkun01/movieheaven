@@ -1,0 +1,30 @@
+{% extends 'movie/base.html' %}
+
+{% block content %}
+{% if films %}
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2"> <!-- Reduced g-4 to g-2 -->
+            {% for film in films %}
+            <div class="col">
+                <div class="card shadow-sm border-0" style="max-width: 300px;"> <!-- Keep original card width -->
+                    <a href="{% url 'film_detail' film.id %}">
+                        <img src="{{ film.poster.url }}" class="card-img-top" alt="{{ film.title }} Poster" style="height: 300px; width: 100%; object-fit: contain;">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ film.title }}</h5>
+                        <p class="card-text">{{ film.description|slice:":120" }}...</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <!-- Position the "Movie not found" message at the top -->
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="alert alert-warning" role="alert" style="font-size: 1.5rem; background-color: #cd0314; color: #ffffff; padding: 20px 40px; text-align: center;">
+            <strong>Oops!</strong> No movies found matching your search.
+        </div>
+    </div>
+{% endif %}
+{% endblock content %}

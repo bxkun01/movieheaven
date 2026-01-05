@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'users/register.css' %}">
+</head>
+<body>
+    <div class="background-image">
+        <img src="{% static 'users/background.jpg' %}">
+    </div>
+    <div class="register">
+        <div class="heading">Create an account</div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="field">
+                <label for="email">EMAIL</label>
+                <input type="email" name="email">
+            </div>
+            <div class="field">
+                <label for="username">USERNAME</label>
+                <input type="text" name="username">
+            </div>
+            <div class="field">
+                <label for="password">PASSWORD</label>
+                <input type="password" name="password">
+            </div>
+            {% for message in messages%}
+                <span style="color: red;">{{message}}</span>
+            {% endfor %}
+            <button class="continue-button" type="submit">Continue</button>
+            <div class="link">Already have an account? <a href="{% url 'login' %}">Login</a></div>
+        </form>
+    </div>
+</body>
+</html>

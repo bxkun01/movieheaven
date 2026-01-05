@@ -1,0 +1,328 @@
+{% extends 'movie/base.html' %}
+
+{% load static %}
+{% block head %}
+<style>
+    body{
+        background-color: rgb(233, 234, 237);
+    }
+    .movie-page-container{
+        display: flex;
+        flex-direction: column;
+        margin-left: 100px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 728px;
+        gap:30px;
+    }
+    .movie-container{
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        gap:10px;
+        padding: 0px 12px 20px 12px;
+    }
+
+    .movie-title{
+        font-size: 24px;
+        color:rgb(39, 98, 145);
+        padding-top: 10px;
+    }
+    .second-container{
+        display: flex;
+        gap: 30px;
+        margin-top: 10px;
+    }
+    .poster-image{
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+    }
+    .poster-image img{
+        width: 200px;
+    }
+
+    .poster-image button,
+    .add-to-list-button {
+        border: none;
+        background-color: rgb(22, 117, 182);
+        color: white;
+        font-weight: bold;
+        padding: 5px;
+        width: 200px; /* Set width to match poster image */
+        transition: background-color 0.15s;
+        text-align: center;
+    }
+
+    .poster-image button:hover,
+    .add-to-list-button:hover {
+        background-color: rgb(38, 107, 153);
+    }
+
+    .top-bar{
+        display: flex;
+        justify-content: space-between;
+        background-color: white;
+    }
+
+    textarea{
+        width: 100%;
+        height: 50px;
+        padding: 5px 15px 5px 15px;
+    }
+
+    .user-comment {
+        display: flex;
+        gap: 10px;
+        border-radius: 5px;
+        width: 100%; 
+    }
+
+    .user-comment img, .users-image img{
+        height: 48px;
+        width: 48px;
+        border-radius: 50%; 
+    }
+
+    .comment-form {
+        flex: 1; 
+    }
+
+    .comment-form textarea {
+        width: 100%; 
+        height: 50px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: none;
+    }
+
+    .comment-form button {
+        margin-top: 5px;
+        padding: 5px 10px;
+        background-color: blue;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .others-comments{
+        display:flex;
+        gap:10px;
+    }
+
+    .comments{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+        background-color: white;
+    }
+
+    .userxcomments{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .username{
+        color:rgb(22, 117, 182);
+    }
+
+    .timexusername{
+        display: flex;
+        gap: 15px;
+    }
+
+    .time-posted{
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .heading-links{
+        display: flex;
+        justify-content:left;
+        gap:30px;
+        border-bottom: 1px solid rgba(120, 130, 140, 0.13);
+        padding-bottom: 10px;
+    }
+
+    .heading-links div a{
+        text-decoration: none;
+        color:black;
+    }
+
+    .heading-links div a:hover{
+        text-decoration: underline;
+    }
+
+    .about-movie{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .no-comment{
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .comment-react-button button{
+        width: 30px;
+        border: none;
+        background-color:white;
+        padding:6px;
+    }
+
+    .comment-react-button button:hover{
+        background-color: rgb(236,245,255);
+    }
+
+    .comment-react-button button img{
+        width: 100%;
+    }
+
+    .share{
+        display: flex;
+        justify-content: space-around;
+        padding-top:10px;
+        padding-bottom:10px;
+    }
+
+    .share img{
+        width: 22px;
+    }
+
+    a{
+        text-decoration: none;
+    }
+    .xdt{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .xdt a{
+        font-size: 20px;
+        color:blue;
+    }
+
+</style>
+{% endblock head %}
+
+{% block title %}
+Films &#8226; {{movie.title}}
+{% endblock %}
+
+{% block content %}
+<div class="movie-page-container">
+    <div class="movie-container">
+    {% if request.user.is_superuser %}
+        <div class="xdt">
+            <div class="movie-title">{{ movie.title }} </div>
+            <div><a href="{% url 'movie-edit' movie.pk %}">Edit</a></div> 
+        </div>
+    {% else %}
+        <div class="movie-title">{{ movie.title }} </div>
+    {% endif %}
+    {% if messages %}
+    <p style="color:blue;">
+        {% for message in messages %}
+        {{message}}
+    {% endfor %}</p>
+    {% endif %}
+    <div class="heading-links">
+        <div> <a href="#">Details</a></div>
+        <div> <a href="#">Cast & Crew </a></div>
+        <div> <a href="#">Reviews</a></div>
+        <div> <a href="#">Recommendations</a></div>
+        <div> <a href="#">Photos</a></div>
+    </div>
+    
+    <div class="second-container">
+        <div class="poster-image">
+            <img src="{{ movie.poster.url }}">
+            <div class="share">
+                <a href="#"><img src="{% static 'movie/images/instagram.png' %}"></a>
+                <a href="#"><img src="{% static 'movie/images/pinterest.png' %}"></a>
+                <a href="#"><img src="{% static 'movie/images/reddit.png' %}"></a>
+                <a href="#"><img src="{% static 'movie/images/twitter.png' %}"></a>
+            </div>
+            <button>Watch Trailer</button>
+            {% if request.user.is_authenticated %}
+            <form method="POST" action="{% url 'add-to-list' %}">
+                {% csrf_token %}
+                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                <button class="add-to-list-button">
+                    Add to List
+                </button>
+            </form>  
+            {% endif %}
+        </div>
+        
+        <div class="about-movie">
+            <div><p>{{ movie.description }}</p></div>
+            <div><b>Genre:</b> {{ movie.genre }}</div>
+        </div>
+    </div>
+    </div>
+
+    <div class="reviews">
+        <div class="top-bar">
+            <div>Reviews</div>
+            <div>Write Review</div>
+        </div>
+    </div>
+    
+    <div class="comments">
+        <div><b>Comments ({{movie.comments.all|length}})</b></div>
+        <div class="user-comment">
+            {% if request.user.is_authenticated %}
+            <img src="{{ request.user.profile.image.url }}">
+
+            <div class="comment-form">
+                <form method="POST" action="{% url 'film_detail' pk=movie.pk %}" name="sfd">
+                    {% csrf_token %}
+                    <textarea id="comment" name="comment" placeholder="Post a comment"></textarea>
+                    <button type="submit">Post</button>
+                </form>
+            </div>
+            {% else %}
+            <span style="color:red; font-size: 19px;"><a style="text-decoration: underline;" href="{% url 'login' %}">Login</a> to comment </span>
+            {% endif  %}
+            
+           
+        </div>
+        {% if not movie.comments.all %}
+        <div class="no-comment">
+            <p>No comments!</p>
+        </div>
+        {% else %}
+            {% for comment in movie.comments.all %}
+            <div class="others-comments">
+                <div class="users-image">
+                    <img src="{{ comment.user.profile.image.url }}">
+                </div>
+                    
+                <div class="userxcomments">
+                    <div class="timexusername">
+                        <a href="{% url 'user-profile' comment.user.id %}">
+                            <div class="username">{{comment.user}}</div>
+                        </a>
+                        <div class="time-posted">{{ comment.created_at|timesince }}</div>
+                    </div>
+                    <div class="comment">{{ comment.text }}</div>   
+                <div class="comment-react-button">
+                    <button><img src="{% static 'movie/images/heart.svg' %}"></button>
+                    <button><img src="{% static 'movie/images/reply.svg' %}"></button>
+                    <button><img src="{% static 'movie/images/triple-dot.svg' %}"></button>
+                    {% if request.user == comment.user %}
+                        <a href="{% url 'delete-comment' comment.id %}">Delete</a>
+                    {% endif %}
+                </div>
+                </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}

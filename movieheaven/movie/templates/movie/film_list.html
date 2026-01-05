@@ -1,0 +1,85 @@
+{% extends 'movie/base.html' %}
+{% load static %}
+
+{% block title %}Film Collection{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 px-lg-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 fw-bold">Film Collection</h1>
+        <div>
+            <a href="#" class="btn btn-outline-dark">
+                <i class="bi bi-filter"></i> Filter
+            </a>
+        </div>
+    </div>
+
+    <!-- Film Grid -->
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3 g-lg-4">
+        {% for film in films reversed %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+                <a href="{% url 'film_detail' film.id %}" class="text-decoration-none">
+                    <img src="{{ film.poster.url }}" 
+                         class="card-img-top object-fit-cover" 
+                         alt="{{ film.title }}"
+                         style="height: 300px;">
+                    <div class="card-body p-2 p-lg-3">
+                        <h5 class="card-title mb-1 text-truncate">{{ film.title }}</h5>
+                        <p class="card-text small text-muted mb-0">
+                            {{ film.release_date|date:"Y" }} • {{ film.genre }}
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

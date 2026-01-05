@@ -1,0 +1,23 @@
+{% extends 'movie/base.html' %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+    <p style="color:red;padding-left: 20px;">{{ message }}</p>
+{% endfor %}
+{% else %}
+<form action="{% url 'add-to-list' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="movie_id" value="{{ movie.id }}">  <!-- Ensure movie_id is included -->
+
+    <label for="movie_folder">Select a List to add '{{ movie.title }}':</label>
+    <select name="movie_folder_id" required>
+        {% for list in lists %}
+            <option value="{{ list.id }}">{{ list.title }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="submit">Add to List</button>
+</form>
+{% endif %}
+{% endblock content %}

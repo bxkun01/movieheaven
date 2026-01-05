@@ -1,0 +1,91 @@
+{% extends 'movie/base.html' %}
+
+{% load static %}
+{% block title %}
+Profile
+{% endblock %}
+
+{% block head%}
+<style>
+
+    .stack{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 100px;
+    }
+    .stack div img{
+        width: 100%;
+        height: 100%;
+        object-fit:cover;
+        border-radius: 100px;
+    }
+
+    .uxdxbutton{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+        gap:5px;
+    }
+
+    .uxdxbutton .username{
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .image_{
+        width: 200px;
+        height: 200px;
+        
+    }
+    .count{
+        display: flex;
+        flex-direction: column;
+        gap:5px;
+        
+        
+    }
+
+    .count div{
+        display: flex;
+        justify-content: space-around;
+        gap:50px;
+    }
+
+
+</style>
+{% endblock head %}
+
+
+
+{% block content %}
+
+<div class="stack">
+    <div class="image_"><img src="{{ request.user.profile.image.url }}"></div>
+    <div class="uxdxbutton">
+        {%if request.user.is_superuser %}
+            <div class="username">{{request.user.username}}(ADMIN)</div>
+            {% else %}
+            <div class="username">{{request.user.username}}</div>
+            {% endif %}
+        <div><b><i>{{request.user.profile.bio}}</i></b></div>
+        <div>Joined on {{ request.user.date_joined|date:"F Y" }}</div>
+        <div class="count">
+            <div>
+                <div><b>Following</b></div>
+                <div><b>Followers</b></div>
+            </div> 
+            <div>
+                <div>{{ request.user.following.count }}</div>
+                <div>{{ request.user.followers.count }}</div>
+            </div>
+        </div>
+        <div><a href="{% url 'profile-edit' %}"><button>Edit Profile</button></a></div>
+    </div>
+    
+</div>
+
+
+{% endblock %}

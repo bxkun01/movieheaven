@@ -1,0 +1,83 @@
+{% extends 'movie/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                <!-- Header -->
+                <div class="card-header bg-dark text-white py-3">
+                    <h1 class="h4 mb-0 text-center fw-bold">
+                        <i class="bi bi-film me-2"></i> Add New Movie
+                    </h1>
+                </div>
+                
+                <!-- Form body -->
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Title Field -->
+                        <div class="mb-3">
+                            <label for="id_title" class="form-label fw-semibold">
+                                Movie Title <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control rounded-2" 
+                                   id="id_title" name="title" required>
+                        </div>
+                        
+                        <!-- Description Field -->
+                        <div class="mb-3">
+                            <label for="id_description" class="form-label fw-semibold">
+                                Description
+                            </label>
+                            <textarea class="form-control rounded-2" id="id_description" 
+                                      name="description" rows="4"></textarea>
+                        </div>
+                        
+                        <div class="row g-3 mb-3">
+                            <!-- Release Date -->
+                            <div class="col-md-6">
+                                <label for="id_release_date" class="form-label fw-semibold">
+                                    Release Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" class="form-control rounded-2" 
+                                       id="id_release_date" name="release_date" required>
+                            </div>
+                            
+                            <!-- Genre -->
+                            <div class="col-md-6">
+                                <label for="id_genre" class="form-label fw-semibold">
+                                    Genre <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control rounded-2" 
+                                       id="id_genre" name="genre" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Poster Upload -->
+                        <div class="mb-4">
+                            <label for="id_poster" class="form-label fw-semibold">
+                                Movie Poster <span class="text-danger">*</span>
+                            </label>
+                            <input type="file" class="form-control rounded-2" 
+                                   id="id_poster" name="poster" accept="image/*" required>
+                        </div>
+                        
+                        <!-- Form Actions -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-dark">
+                                <i class="bi bi-save me-1"></i> Save Movie
+                            </button>
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-1"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+  body {
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+            background-color: #f4f4f4; 
+        }
+
+        .register {
+            border: 1px solid black;
+            width: 416px;
+            padding: 32px;
+            background-color: black;
+            color: white;
+            border-radius: 10px;
+            position: relative;
+            z-index: 100; 
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 15px;
+        }
+
+        .field input {
+            height: 20px;
+            width: 396px;
+            outline: none;
+            padding: 5px;
+        }
+
+        .continue-button {
+            height: 40px;
+            background-color: rgb(88, 101, 242);
+            color: white;
+            font-weight: bold;
+            font-size: medium;
+            border: none;
+            cursor: pointer;
+        }
+
+        .heading {
+            display: flex;
+            justify-content: center;
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .link a {
+            text-decoration: none;
+            color: rgb(88, 101, 242);
+            transition: text-decoration 0.3s;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+        .background-image{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+            z-index: -1;
+        }
+        .background-image img{
+            object-fit:cover;
+            height: 100%;
+            width: 100%;
+        }
